@@ -31,19 +31,20 @@ const sketch = (p: p5) => {
 
       p.translate(p.width / 2, p.height / 2);
       p.rotate(r);
-      let wave = p.random([2, 3, 4, 5]);
+      let wave = p.random([3, 5, 8]);
       p.shearX(p.cos(rotation * wave) * wave);
       p.shearY(p.sin(rotation * wave) * wave);
       let step = p.random([
         // 1, 2, 3, 4, 5, 6, 8, 9, 10,
-        12, 15, 18, 20, 24, 30,
-        // 36, 40, 45, 60, 72, 90, 120,
+        // 12, 15,
+        // 18, 20, 24,
+        30, 36, 40, 45, 60, 72, 90, 120,
       ]);
       let angle_step = 360 / step;
       for (let angle = 0; angle < 360; angle += angle_step) {
         p.push();
 
-        p.strokeWeight(2);
+        p.strokeWeight(1);
         p.strokeCap(p.ROUND);
         let colors = p.shuffle(palette.concat());
         let c0 = p.color(colors[0]);
@@ -59,29 +60,21 @@ const sketch = (p: p5) => {
           0
         );
         gradient.addColorStop(0, c0);
-        // gradient.addColorStop(angle_step / 360 / 2, colors[2]);
-        // gradient.addColorStop(angle_step / 360, c1);
-
-        //   gradient = p.drawingContext.createRadialGradient(
-        //     0,
-        //     0,
-        //     r,
-        //     0,
-        //     0,
-        //     r * 2
-        //   );
-        //   gradient.addColorStop(0, c0);
-        //   gradient.addColorStop(1 / 2, colors[2]);
-        //   gradient.addColorStop(1, c1);
-        // }
         p.drawingContext.strokeStyle = gradient;
         p.push();
         p.rotate(angle);
         p.noFill();
-        // p.drawingContext.filter = 'blur(' + 5 + 'px)';
         p.beginShape();
         for (let a = 0; a < angle_step; a++) {
-          let nr = 200 + a * 3;
+          let nr = 150 + a * 3;
+          let x = p.cos(a * 3) * nr;
+          let y = p.sin(a * 3) * nr;
+          p.vertex(x, y);
+        }
+        p.endShape();
+        p.beginShape();
+        for (let a = 0; a < angle_step / 8; a++) {
+          let nr = 180 + a * 3;
           let x = p.cos(a * 1.5) * nr;
           let y = p.sin(a * 1.5) * nr;
           p.vertex(x, y);
